@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-import { AccountContextProvider } from './contexts/AccountContext';
-import { UserContextProvider } from './contexts/UserContext';
+import {
+  AccountContextProvider,
+  UserContextProvider,
+  GameContextProvider,
+  OpenViduContextProvider,
+  MediaPipeContextProvider,
+} from './contexts';
 
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
@@ -19,7 +24,13 @@ root.render(
     <ThemeProvider theme={theme}>
       <AccountContextProvider>
         <UserContextProvider>
-          <App />
+          <GameContextProvider>
+            <OpenViduContextProvider>
+              <MediaPipeContextProvider>
+                <App />
+              </MediaPipeContextProvider>
+            </OpenViduContextProvider>
+          </GameContextProvider>
         </UserContextProvider>
       </AccountContextProvider>
     </ThemeProvider>

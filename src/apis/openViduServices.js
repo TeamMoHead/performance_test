@@ -18,6 +18,6 @@ const getConnectionToken = async ({ accessToken, userData }) => {
   return API.post(url, { userData }, config);
 };
 
-export const authServices = {
+export const openViduServices = {
   getConnectionToken,
 };

@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from 'react';
 import { UserContext, GameContext, AccountContext } from './';
-import { challengeServices } from '../apis';
+import { openViduServices } from '../apis/openViduServices';
 import { OpenVidu } from 'openvidu-browser';
 
 const OpenViduContext = createContext();
@@ -22,6 +22,8 @@ const OpenViduContextProvider = ({ children }) => {
   } = useContext(GameContext);
 
   const { userId, userName } = myData;
+
+  const [startVideo, setStartVideo] = useState(false);
 
   const [OVInstance, setOVInstance] = useState(null); // OpenVidu 객체
   const [videoSession, setVideoSession] = useState(null);
@@ -40,7 +42,7 @@ const OpenViduContextProvider = ({ children }) => {
     };
 
     try {
-      const response = await challengeServices.getConnectionToken({
+      const response = await openViduServices.getConnectionToken({
         accessToken,
         userData,
       });
@@ -111,8 +113,9 @@ const OpenViduContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (!challengeId) return;
+    if (!startVideo) return;
     getConnectionToken();
-  }, [challengeId]);
+  }, [challengeId, startVideo]);
 
   useEffect(() => {
     if (!connectionToken) return;
@@ -212,6 +215,7 @@ const OpenViduContextProvider = ({ children }) => {
     <OpenViduContext.Provider
       value={{
         getConnectionToken,
+        setStartVideo,
         videoSession,
         micOn,
         turnMicOnOff,

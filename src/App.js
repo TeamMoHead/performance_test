@@ -1,62 +1,68 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AccountContext } from './contexts/AccountContext';
-import { UserContext } from './contexts/UserContext';
+import { AccountContext, UserContext, OpenViduContext } from './contexts';
+import TestPage from './TestPage';
 import styled from 'styled-components';
+import * as S from './styles/common';
 
 function App() {
   const { userId } = useContext(AccountContext);
   const { myData } = useContext(UserContext);
+  const { videoSession, myStream, mateStreams, setStartVideo } =
+    useContext(OpenViduContext);
+  const [showTestPage, setShowTestPage] = useState(false);
+
+  const stopTest = () => {
+    if (videoSession) {
+      videoSession.off('streamCreated');
+      videoSession.disconnect();
+    }
+    // if (myStream) {
+    //   myStream.dispose();
+    //   mateStreams.forEach(stream => stream.dispose());
+    // }
+    setStartVideo(false);
+    setShowTestPage(false);
+  };
 
   return (
-    <PageWrapper>
-      <Head>
-        {'< '}Home{' >'}
-      </Head>
-      {userId ? (
+    <S.PageWrapper>
+      {showTestPage ? (
         <>
-          <Data>User ID: {myData?.userId}</Data>
-          <Data>User Name: {myData?.userName}</Data>
-          <Data>Challenge ID: {myData?.challengeId}</Data>
+          <S.Button
+            data-test-id="stop-test"
+            onClick={() => stopTest()}
+            style={{ backgroundColor: 'red' }}
+          >
+            Stop Test
+          </S.Button>
+          <TestPage />
+        </>
+      ) : userId ? (
+        <>
+          <S.Head>
+            {'< '}Home{' >'}
+          </S.Head>
+          <Data>User ID:: {myData?.userId}</Data>
+          <Data>User Name:: {myData?.userName}</Data>
+          <Data>Challenge ID:: {myData?.challengeId}</Data>
+
+          <S.Button
+            data-test-id="start-test"
+            onClick={() => setShowTestPage(true)}
+            style={{ backgroundColor: 'green' }}
+          >
+            Go to Test Page
+          </S.Button>
         </>
       ) : (
         <span>로딩중...</span>
       )}
-      <Button>Start Test</Button>
-    </PageWrapper>
+    </S.PageWrapper>
   );
 }
 
 export default App;
 
-const PageWrapper = styled.div`
-  ${({ theme }) => theme.flex.center}
-  flex-direction: column;
-  gap: 20px;
-
-  width: calc(100vw-'48px');
-
-  margin: 100px 24px 50px 24px;
-`;
-
-const Head = styled.h1`
-  font-size: 30px;
-  font-weight: 900;
-  margin: 40px;
-  color: skyblue;
-`;
-
 const Data = styled.p`
-  font-size: 20px;
-`;
-
-const Button = styled.button`
-  width: 200px;
-  padding: 10px 20px;
-  margin: 20px;
-  border-radius: ${({ theme }) => theme.radius.small};
-
-  background-color: orange;
-  color: black;
-
-  cursor: pointer;
+  font-size: 15px;
 `;

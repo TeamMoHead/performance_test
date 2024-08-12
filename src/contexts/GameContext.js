@@ -11,21 +11,12 @@ const GAME_MODE = {
   0: 'waiting',
   1: 'mission1',
   2: 'mission2',
-  3: 'mission3',
-  4: 'mission4',
-  5: 'mission5',
-  6: 'affirmation',
-  7: 'result',
 };
 
 // mission 당 소요 시간
 const GAME_MODE_DURATION = {
   1: 21500,
   2: 19000,
-  3: 17000,
-  4: 15000,
-  5: 17000,
-  6: 10000,
 };
 
 const RESULT_TIME = 2000;
@@ -180,7 +171,7 @@ const GameContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    startModelWarmUp();
+    // startModelWarmUp();
   }, []);
 
   // ================= ⬆⬆⬆⬆ GAME MODE UPDATE ⬆⬆⬆⬆ =================

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  padding: 10px 20px;
+  padding: 5px 10px;
   margin-bottom: 5px;
-  border-radius: ${({ theme }) => theme.radius.small};
+  border-radius: 13px;
 
   color: black;
 

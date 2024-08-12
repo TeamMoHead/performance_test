@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor/cli": "^6.1.1",
+    "@capacitor/core": "^6.1.1",
+    "@capacitor/ios": "^6.1.1",
+    "@mediapipe/holistic": "^0.5.1675471629",
+    "@mediapipe/pose": "^0.5.1675469404",
     "axios": "^1.7.3",
+    "openvidu-react": "^2.27.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
@@ -21,9 +27,11 @@
     "workbox-routing": "^6.6.0",
     "workbox-strategies": "^6.6.0",
     "workbox-streams": "^6.6.0",
-    "@mediapipe/holistic": "^0.5.1675471629",
-    "@mediapipe/pose": "^0.5.1675469404",
-    "openvidu-react": "^2.27.0"
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

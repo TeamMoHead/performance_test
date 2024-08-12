@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AccountContext, UserContext, OpenViduContext } from './contexts';
-import TestPage from './TestPage';
+import TestPage from './pages/TestPage';
 import styled from 'styled-components';
 import * as S from './styles/common';
 

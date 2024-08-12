@@ -9,6 +9,19 @@ const API = axios.create({
   },
 });
 
+const getChallengeInfo = async ({ accessToken, challengeId }) => {
+  const url = '/challenge';
+  const config = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      challengeId: challengeId,
+    },
+  };
+  return await API.get(url, config);
+};
+
 const sendEnteredTime = async ({ accessToken, userId }) => {
   const url = `in-game/enter/${userId}`;
   console.log('===========>> SEND ENTERED TIME:: URL:: ', url);
@@ -45,6 +58,7 @@ const getGameResults = async ({ accessToken, challengeId }) => {
 };
 
 export const inGameServices = {
+  getChallengeInfo,
   sendEnteredTime,
   sendMyGameScore,
   getGameResults,

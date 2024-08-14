@@ -1,9 +1,15 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
+  appId: 'modugisang.test.app',
   appName: 'perf_test',
   webDir: 'build',
+
+  // server: {
+  //   hostname: 'localhost',
+  //   androidScheme: 'https',
+  //   iosScheme: 'ionic',
+  // },
 };
 
 export default config;

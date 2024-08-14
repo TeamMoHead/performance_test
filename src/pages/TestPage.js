@@ -19,12 +19,17 @@ const TestPage = () => {
   const [isModelReady, setIsModelReady] = useState(false);
   const [isInferenceReady, setIsInferenceReady] = useState(false);
   const [mateList, setMateList] = useState([]);
+  const [FPS, setFPS] = useState(null);
 
   useEffect(() => {
     if (challengeData) {
       setMateList(challengeData?.mates?.filter(mate => mate.userId !== myId));
     } else return;
   }, [challengeData]);
+
+  const measureFPS = () => {
+    window.getFPS(15000).then(fps => setFPS(fps));
+  };
 
   const startVideo = () => {
     setStartVideo(true);
@@ -43,27 +48,39 @@ const TestPage = () => {
   return (
     <>
       <S.Head>TestPage</S.Head>
+      <S.Button
+        onClick={() => measureFPS()}
+        style={{ backgroundColor: 'lightGreen' }}
+      >
+        measure-fps
+      </S.Button>
+      {FPS && (
+        <span
+          id="fps-value"
+          accessibilityLabel="fps-value"
+          accessibilityId="fps-value"
+        >
+          FPS-Result: {FPS}
+        </span>
+      )}
       <ButtonArea>
         <S.Button
-          data-test-id="start-video"
           onClick={() => startVideo()}
           style={{ backgroundColor: 'violet' }}
         >
-          Start Video
+          start-video
         </S.Button>
         <S.Button
-          data-test-id="load-model"
           onClick={() => loadModel()}
           style={{ backgroundColor: 'cyan' }}
         >
-          Load Model
+          load-model
         </S.Button>
         <S.Button
-          data-test-id="real-time-inference"
           onClick={() => realTimeInference()}
           style={{ backgroundColor: 'yellow' }}
         >
-          Real Time Inference
+          real-time-inference
         </S.Button>
       </ButtonArea>
       {isVideoStarted && (

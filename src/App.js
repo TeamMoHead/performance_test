@@ -29,11 +29,10 @@ function App() {
       {showTestPage ? (
         <>
           <S.Button
-            data-test-id="stop-test"
             onClick={() => stopTest()}
             style={{ backgroundColor: 'red' }}
           >
-            Stop Test
+            stop-test
           </S.Button>
           <TestPage />
         </>
@@ -47,11 +46,10 @@ function App() {
           <Data>Challenge ID:: {myData?.challengeId}</Data>
 
           <S.Button
-            data-test-id="start-test"
             onClick={() => setShowTestPage(true)}
             style={{ backgroundColor: 'green' }}
           >
-            Go to Test Page
+            start-test
           </S.Button>
         </>
       ) : (

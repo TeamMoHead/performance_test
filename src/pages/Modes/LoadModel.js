@@ -42,7 +42,7 @@ const LoadModel = () => {
     turnMicOnOff,
   } = useContext(OpenViduContext);
 
-  const { matesReadyStatus, startFirstMission } = useContext(GameContext);
+  const { matesReadyStatus } = useContext(GameContext);
   const [mateList, setMateList] = useState([]);
 
   const [loadingMode, setLoadingMode] = useState('loadMyModel');
@@ -129,9 +129,7 @@ const LoadModel = () => {
           turnMicOnOff();
         }
 
-        setTimeout(() => {
-          startFirstMission();
-        }, 2000);
+        console.log('[TEST PAGE] => Model Successfully Loaded!!');
       }
     }
   }, [matesReadyStatus]);
@@ -175,7 +173,7 @@ export default LoadModel;
 
 const Wrapper = styled.div`
   z-index: 1000;
-  position: fixed;
+  position: absolute;
   width: 100vw;
   height: 100vh;
 

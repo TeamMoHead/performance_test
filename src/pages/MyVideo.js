@@ -10,6 +10,7 @@ const GAME_MODE = {
   0: 'waiting',
   1: 'mission1',
   2: 'mission2',
+  3: 'end',
 };
 
 const GAME_MODE_COMPONENTS = {
@@ -17,6 +18,7 @@ const GAME_MODE_COMPONENTS = {
   0: <Waiting />,
   1: <Mission1 />,
   2: <Mission2 />,
+  3: <div>END</div>,
 };
 
 const MyVideo = () => {
@@ -52,7 +54,7 @@ const MyVideo = () => {
         <LoadingWithText loadingMSG="카메라를 인식 중이에요" />
       )}
 
-      {GAME_MODE[inGameMode] !== 'result' && (
+      {GAME_MODE[inGameMode] !== 'end' && (
         <React.Fragment key={inGameMode}>
           {GAME_MODE_COMPONENTS[inGameMode]}
         </React.Fragment>
@@ -65,7 +67,7 @@ const MyVideo = () => {
         $myMissionStatus={myMissionStatus}
         $isWaitingMode={GAME_MODE[inGameMode] === 'waiting'}
         $isLoadingModelMode={GAME_MODE[inGameMode] === 'loadModel'}
-        $isResultMode={GAME_MODE[inGameMode] === 'result'}
+        $isResultMode={GAME_MODE[inGameMode] === 'end'}
         $amTheTopUser={true}
       />
     </Wrapper>

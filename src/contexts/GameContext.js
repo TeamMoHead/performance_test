@@ -11,12 +11,13 @@ const GAME_MODE = {
   0: 'waiting',
   1: 'mission1',
   2: 'mission2',
+  3: 'end',
 };
 
 // mission 당 소요 시간
 const GAME_MODE_DURATION = {
-  1: 21500,
-  2: 19000,
+  1: 15000,
+  2: 15000,
 };
 
 const RESULT_TIME = 2000;
@@ -126,8 +127,7 @@ const GameContextProvider = ({ children }) => {
   let nextGameMode = 1;
   const updateMode = () => {
     nextGameMode += 1;
-    if (nextGameMode <= 7) {
-      // localStorage.setItem('inGameMode', JSON.stringify(nextGameMode));
+    if (nextGameMode <= 3) {
       setInGameMode(nextGameMode);
       setIsMissionStarting(true);
       setIsMissionEnding(false);
@@ -135,7 +135,7 @@ const GameContextProvider = ({ children }) => {
       setIsRoundPassed(false); // 라운드 통과 상태 초기화
       setIsRoundFailed(false);
 
-      if (GAME_MODE[nextGameMode] !== 'result') {
+      if (GAME_MODE[nextGameMode] !== 'end') {
         setTimeout(() => {
           setIsMissionEnding(true);
           setTimeout(() => {
@@ -144,8 +144,9 @@ const GameContextProvider = ({ children }) => {
         }, GAME_MODE_DURATION[nextGameMode]);
       }
 
-      if (GAME_MODE[nextGameMode] === 'result') {
+      if (GAME_MODE[nextGameMode] === 'end') {
         // localStorage.setItem('inGameMode', JSON.stringify(7));
+        setIsMissionEnding(false);
       }
     }
   };
@@ -170,15 +171,13 @@ const GameContextProvider = ({ children }) => {
     }, 1000);
   };
 
-  useEffect(() => {
-    // startModelWarmUp();
-  }, []);
-
   // ================= ⬆⬆⬆⬆ GAME MODE UPDATE ⬆⬆⬆⬆ =================
 
   return (
     <GameContext.Provider
       value={{
+        startModelWarmUp,
+        //
         inGameMode,
         isMyReadyStatusSent,
         setIsMyReadyStatusSent,

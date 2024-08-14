@@ -56,13 +56,7 @@ class CapacitorAppPerformanceTests: XCTestCase {
             
             inferenceBtn.tap()
             
-            
-            // FPS 측정
-            let measureFPSButton = webView.buttons["measure-fps"]
-            XCTAssertTrue(measureFPSButton.waitForExistence(timeout: 5), "Measure FPS button did not appear")
-            
-            measureFPSButton.tap()
-            
+            // 대기
             sleep(20)
             
             // FPS 결과 대기 및 읽기

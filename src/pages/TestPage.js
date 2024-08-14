@@ -15,6 +15,7 @@ const TestPage = () => {
   const { userId: myId } = useContext(AccountContext);
   const { setStartVideo } = useContext(OpenViduContext);
   const { challengeData } = useContext(UserContext);
+  const { startModelWarmUp, startFirstMission } = useContext(GameContext);
   const [isVideoStarted, setIsVideoStarted] = useState(false);
   const [isModelReady, setIsModelReady] = useState(false);
   const [isInferenceReady, setIsInferenceReady] = useState(false);
@@ -33,15 +34,20 @@ const TestPage = () => {
 
   const startVideo = () => {
     setStartVideo(true);
+    measureFPS();
     setIsVideoStarted(true);
     console.log('[TEST PAGE] => Video Started');
   };
 
   const loadModel = () => {
+    startModelWarmUp();
+    measureFPS();
     console.log('[TEST PAGE] => Model Loaded');
   };
 
   const realTimeInference = () => {
+    startFirstMission();
+    measureFPS();
     console.log('[TEST PAGE] => Real Time Inference');
   };
 
@@ -54,15 +60,7 @@ const TestPage = () => {
       >
         measure-fps
       </S.Button>
-      {FPS && (
-        <span
-          id="fps-value"
-          accessibilityLabel="fps-value"
-          accessibilityId="fps-value"
-        >
-          FPS-Result: {FPS}
-        </span>
-      )}
+      {FPS && <span>FPS-Result: {FPS}</span>}
       <ButtonArea>
         <S.Button
           onClick={() => startVideo()}

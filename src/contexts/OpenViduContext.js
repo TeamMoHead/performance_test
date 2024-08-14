@@ -178,7 +178,6 @@ const OpenViduContextProvider = ({ children }) => {
         publishVideo: true,
         resolution: '340x480',
         frameRate: 30,
-        mirror: true,
       });
       videoSession.publish(publisher);
       setMyStream(publisher);

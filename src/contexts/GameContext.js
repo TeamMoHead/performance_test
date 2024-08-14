@@ -16,11 +16,11 @@ const GAME_MODE = {
 
 // mission 당 소요 시간
 const GAME_MODE_DURATION = {
-  1: 15000,
-  2: 15000,
+  1: 8000,
+  2: 8000,
 };
 
-const RESULT_TIME = 2000;
+const RESULT_TIME = 1000;
 
 const GameContextProvider = ({ children }) => {
   const { fetchData } = useFetch();

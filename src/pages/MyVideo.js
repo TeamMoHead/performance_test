@@ -107,4 +107,8 @@ const Video = styled.video`
           : `solid 3px pink`};
 
   object-fit: cover;
+
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
 `;

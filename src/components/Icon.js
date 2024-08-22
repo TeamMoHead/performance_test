@@ -1,10 +1,16 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMusic,
+  faSpinner,
+  faVolumeMute,
+} from '@fortawesome/free-solid-svg-icons';
 
 const iconList = {
   loading: faSpinner,
+  musicOff: faVolumeMute,
+  musicOn: faMusic,
 };
 
 const iconStyleSample = {

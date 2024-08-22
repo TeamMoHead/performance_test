@@ -6,6 +6,7 @@ import {
   UserContext,
   AccountContext,
 } from '../contexts';
+import MusicController from './MusicController';
 import MyVideo from './MyVideo';
 import MateVideo from './MateVideo';
 import * as S from '../styles/common';
@@ -84,6 +85,7 @@ const TestPage = () => {
       {isVideoStarted && (
         <VideoArea $hasMate={mateList?.length > 0}>
           <>
+            <MusicController />
             <MyVideo />
             <MatesVideoWrapper $isSingle={mateList?.length === 1}>
               {mateList?.length > 0 &&

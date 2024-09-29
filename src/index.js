@@ -1,14 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import Router from './Router';
 
-import {
-  AccountContextProvider,
-  UserContextProvider,
-  GameContextProvider,
-  OpenViduContextProvider,
-  MediaPipeContextProvider,
-} from './contexts';
+import { AccountContextProvider, UserContextProvider } from './contexts';
 
 import { initGlobalFPSFunction } from './components/MeasureFPS';
 
@@ -28,13 +22,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <AccountContextProvider>
         <UserContextProvider>
-          <GameContextProvider>
-            <OpenViduContextProvider>
-              <MediaPipeContextProvider>
-                <App />
-              </MediaPipeContextProvider>
-            </OpenViduContextProvider>
-          </GameContextProvider>
+          <Router />
         </UserContextProvider>
       </AccountContextProvider>
     </ThemeProvider>

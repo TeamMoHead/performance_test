@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { POSE_CONNECTIONS } from '@mediapipe/pose';
-import createPerformanceMonitor from './Performance';
+import usePerformanceMonitor from '../../hooks/usePerformanceMonitor';
 import * as S from '../../styles/common';
 
 const WorkerOnPage = () => {
@@ -12,8 +12,14 @@ const WorkerOnPage = () => {
   const canvasElement = useRef(null);
   const workerRef = useRef(null);
 
-  const performanceMonitor = useRef(createPerformanceMonitor());
-  const [performanceResult, setPerformanceResult] = useState(null);
+  const {
+    startMeasurement,
+    measureFirstDraw,
+    collectData,
+    analyzePerformance,
+    reset,
+    performanceResult,
+  } = usePerformanceMonitor();
 
   const moveToSwitchModePage = () => {
     window.location.href = '/worker-test';
@@ -33,14 +39,12 @@ const WorkerOnPage = () => {
       } else if (event.data.type === 'results') {
         drawResults(event.data.results);
         setInferenceTime(event.data.inferenceTime);
-        performanceMonitor.current.collectData(event.data.inferenceTime);
+        collectData(event.data.inferenceTime);
         requestAnimationFrame(detectPose);
       } else if (event.data.type === 'stopped') {
-        const result = performanceMonitor.current.analyzePerformance();
-        setPerformanceResult(result);
+        const result = analyzePerformance();
         console.log('==========Performance Analysis=========');
         console.log(result);
-        performanceMonitor.current.reset();
       }
     };
 
@@ -52,27 +56,18 @@ const WorkerOnPage = () => {
       console.log('Terminating worker');
       worker.terminate();
     };
-  }, []);
+  }, [collectData, analyzePerformance, reset]);
 
   useEffect(() => {
-    console.log(
-      '<Main Thread> Effect triggered, isModelInitialized:',
-      isModelInitialized,
-    );
-
     if (isModelInitialized && videoElement.current) {
-      console.log('<Main Thread> Setting up video');
       videoElement.current.src =
         process.env.PUBLIC_URL + '/sample_stretching.mp4';
 
       videoElement.current.onloadeddata = () => {
-        console.log('<Main Thread> Video loaded, trying to play');
         videoElement.current
           .play()
           .then(() => {
-            console.log(
-              '<Main Thread> Video playing, requesting animation frame',
-            );
+            startMeasurement();
             requestAnimationFrame(detectPose);
           })
           .catch(error => {
@@ -82,28 +77,35 @@ const WorkerOnPage = () => {
 
       videoElement.current.onended = () => {
         console.log('<Main Thread> Video ended');
-        // 비디오가 끝났을 때 worker에게 정지 메시지 전송
+        cancelAnimationFrame(detectPose);
         workerRef.current.postMessage({ type: 'stop' });
       };
     }
-  }, [isModelInitialized]);
+  }, [isModelInitialized, startMeasurement]);
 
   const detectPose = async () => {
     if (videoElement.current.paused || videoElement.current.ended) {
       return;
     }
 
-    createImageBitmap(videoElement.current).then(imageBitmap => {
-      workerRef.current.postMessage({ type: 'detect', image: imageBitmap }, [
-        imageBitmap,
-      ]);
-    });
-
-    // requestAnimationFrame(detectPose);
+    createImageBitmap(videoElement.current)
+      .then(imageBitmap => {
+        workerRef.current.postMessage({ type: 'detect', image: imageBitmap }, [
+          imageBitmap,
+        ]);
+      })
+      .catch(error => {
+        console.error('Error creating image bitmap');
+        setTimeout(() => {
+          requestAnimationFrame(detectPose);
+        }, 0);
+      });
   };
 
   const drawResults = results => {
     if (!canvasElement.current) return;
+
+    measureFirstDraw();
 
     const canvasCtx = canvasElement.current.getContext('2d');
     canvasCtx.save();
@@ -139,7 +141,6 @@ const WorkerOnPage = () => {
       </S.Button>
       <VideoCanvas>
         <Video ref={videoElement} playsInline muted />
-
         <Canvas ref={canvasElement} width="360" height="640" />
       </VideoCanvas>
       <div>
@@ -147,7 +148,7 @@ const WorkerOnPage = () => {
       </div>
       {performanceResult && (
         <div>
-          <h3>Performance Analysis:</h3>
+          <h3>---- Performance Analysis ----</h3>
           <p>
             Average Inference Time:{' '}
             {performanceResult.avgInferenceTime.toFixed(2)} ms
@@ -163,6 +164,10 @@ const WorkerOnPage = () => {
           <p>FPS: {performanceResult.fps.toFixed(2)}</p>
           <p>Total Frames: {performanceResult.totalFrames}</p>
           <p>Total Time: {(performanceResult.totalTime / 1000).toFixed(2)} s</p>
+          <p>
+            Delay until first draw:{' '}
+            {performanceResult.firstDrawDelay?.toFixed(2)} ms
+          </p>
         </div>
       )}
     </S.PageWrapper>
@@ -170,14 +175,6 @@ const WorkerOnPage = () => {
 };
 
 export default WorkerOnPage;
-
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  padding: 104px 24px 30px 24px;
-  border: 1px solid white;
-`;
 
 const VideoCanvas = styled.div`
   position: relative;

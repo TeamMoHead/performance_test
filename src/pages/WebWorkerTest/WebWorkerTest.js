@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import * as S from '../../styles/common';
 
@@ -41,6 +41,7 @@ const WebWorkerTest = () => {
       >
         go-to-main
       </S.Button>
+      <Outlet />
     </S.PageWrapper>
   );
 };

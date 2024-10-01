@@ -35,6 +35,7 @@ function Router() {
         <Route path="/worker-test" element={<WebWorkerTest />} />
         <Route path="/worker-on" element={<WorkerOnPage />} />
         <Route path="/worker-off" element={<WorkerOffPage />} />
+
         <Route path="*" element={<Main />} />
       </Routes>
     </BrowserRouter>

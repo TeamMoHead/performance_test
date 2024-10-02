@@ -41,7 +41,7 @@ class CapacitorAppPerformanceTests: XCTestCase {
             let webView = app.webViews.firstMatch
             XCTAssertTrue(webView.waitForExistence(timeout: 10), "WebView did not appear")
         
-            tapButton(in: webView, withIdentifier: "start-test", timeout: 20, errorMessage: "Start button did not appear")
+            tapButton(in: webView, withIdentifier: "mediaPipe-test", timeout: 20, errorMessage: "Start button did not appear")
             
             // OpenVidu 영상통화 테스트
             runTestPhase(name: "OpenVidu Video Call", buttonIdentifier: "start-video", duration: 20, webView: webView)
